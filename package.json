@@ -1,0 +1,15 @@
+{
+  "name": "auth-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/jail-maker/auth-server.git",
+  "author": "Dmitry Marov <d.marov94@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "jsonwebtoken": "^8.2.0",
+    "koa": "^2.5.0",
+    "koa-better-router": "^2.1.1",
+    "koa-json": "^2.0.2",
+    "koa-router": "^7.4.0"
+  }
+}
