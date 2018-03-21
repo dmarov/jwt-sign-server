@@ -6,13 +6,12 @@ const Koa = require('koa');
 const Router = require('koa-better-router');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
-const json = require('koa-json');
 
 let app = new Koa();
 let route = Router().loadMethods();
 
 const HOSTNAME = '127.0.0.1';
-const PORT = 3987;
+const PORT = 3002;
 
 route.get('/auth-token', ctx => {
 
@@ -20,25 +19,18 @@ route.get('/auth-token', ctx => {
 
         let secret = fs.readFileSync('keys/private.key');
         let token = jwt.sign({ permissions: ['write'] }, secret, { algorithm: 'RS512', expiresIn: '24h' });
-        ctx.body = { status: 'ok', token: token };
+        ctx.body = { token: token };
 
     } catch (e) {
 
-        ctx.body = { status: 'err', message: e.message };
+        ctx.body = {};
 
     }
-
-});
-
-route.get('/refresh-token', ctx => {
-
-    // ctx.body = 'refresh token sent';
 
 });
 
 let apiRoute = Router({ prefix: '/api/v1' });
 apiRoute.extend(route);
 
-app.use(json());
 app.use(apiRoute.middleware());
 app.listen(PORT);
