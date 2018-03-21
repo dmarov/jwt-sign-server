@@ -1,0 +1,7 @@
+---
+port: 3002
+# path to private RSA key
+privateKeyPath: 'keys/private.key'
+# token expiration time in hours
+tokenExpiresIn: '24h'
+

@@ -2,23 +2,25 @@
 
 'use strict';
 
+const config = require('./lib/Config');
 const Koa = require('koa');
 const Router = require('koa-better-router');
 const fs = require('fs');
+const path = require('path');
 const jwt = require('jsonwebtoken');
 
 let app = new Koa();
 let route = Router().loadMethods();
 
-const HOSTNAME = '127.0.0.1';
-const PORT = 3002;
-
 route.get('/auth-token', ctx => {
 
     try {
 
-        let secret = fs.readFileSync('keys/private.key');
-        let token = jwt.sign({ permissions: ['write'] }, secret, { algorithm: 'RS512', expiresIn: '24h' });
+        let data = { permissions: ['write'] };
+        let secret = fs.readFileSync(path.resolve(config.privateKeyPath));
+        let params = { algorithm: 'RS512', expiresIn: config.tokenExpiresIn };
+
+        let token = jwt.sign(data, secret, params);
         ctx.body = { token: token };
 
     } catch (e) {
@@ -33,4 +35,4 @@ let apiRoute = Router({ prefix: '/api/v1' });
 apiRoute.extend(route);
 
 app.use(apiRoute.middleware());
-app.listen(PORT);
+app.listen(config.port);
