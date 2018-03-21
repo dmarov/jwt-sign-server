@@ -1,7 +1,6 @@
 'use strict';
 
 const fs = require('fs');
-const path = require('path');
 const minimist = require('minimist');
 const exec = require('child_process').exec;
 

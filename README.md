@@ -36,3 +36,7 @@ node index.js --privateKeyPath /path/to/private.key --port 3003 --tokenExpiresIn
 {}
 
 ```
+## path to accuire token
+```
+localhost:3003/api/v1/auth-token
+```
