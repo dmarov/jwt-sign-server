@@ -12,7 +12,7 @@ const jwt = require('jsonwebtoken');
 let app = new Koa();
 let route = Router().loadMethods();
 
-route.get('/auth-token', ctx => {
+route.get('/auth-token', async ctx => {
 
     try {
 
@@ -25,7 +25,7 @@ route.get('/auth-token', ctx => {
 
     } catch (e) {
 
-        ctx.body = {};
+        ctx.response.status(500);
 
     }
 
