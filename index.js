@@ -12,7 +12,7 @@ const jwt = require('jsonwebtoken');
 let app = new Koa();
 let route = Router().loadMethods();
 
-route.get('/auth-token', async ctx => {
+route.get('/authorization-token', async ctx => {
 
     try {
 
@@ -21,11 +21,11 @@ route.get('/auth-token', async ctx => {
         let params = { algorithm: 'RS512', expiresIn: config.tokenExpiresIn };
 
         let token = jwt.sign(data, secret, params);
-        ctx.body = { token: token };
+        ctx.body = { 'authorization-token': token };
 
     } catch (e) {
 
-        ctx.response.status(500);
+        ctx.response.status = 500;
 
     }
 
