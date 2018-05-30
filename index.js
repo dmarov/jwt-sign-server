@@ -9,28 +9,64 @@ const Router = require('koa-better-router');
 const fs = require('fs');
 const path = require('path');
 const jwt = require('jsonwebtoken');
+const TokenGenerator = require('./lib/token-generator');
 
 let app = new Koa();
 let route = Router().loadMethods();
 
-let secret = fs.readFileSync(path.resolve(config.privateKeyPath));
-let params = { algorithm: 'RS512', expiresIn: config.tokenExpiresIn };
+let privateKey = fs.readFileSync(path.resolve(config.privateKeyPath));
+let publicKey = fs.readFileSync(path.resolve(config.publicKeyPath));
+
+const params = { algorithm: 'RS512' };
+const paramsAcessToken = { expiresIn: config.accessTokenExpiresIn };
+const paramsRefreshToken = { expiresIn: config.refreshTokenExpiresIn };
 
 app.use(jsonBody({fallback: true}));
 
-// should get user name from server
-
-
-route.get('/authorization-token', async ctx => {
+route.get('/access-token', async ctx => {
 
     try {
 
+        const gen = new TokenGenerator(privateKey, publicKey, params);
+
         let data = ctx.request.body;
-        let token = jwt.sign(data, secret, params);
-        ctx.response.body = { 'authorization-token': token };
+
+        let accessToken = gen.sign(data, paramsAcessToken);
+        let refreshToken = gen.refresh(accessToken, paramsRefreshToken);
+
+        ctx.response.body = {
+            'accessToken': accessToken,
+            'refreshToken': refreshToken,
+        };
 
     } catch (e) {
 
+        console.log(e);
+        ctx.response.status = 500;
+
+    }
+
+});
+
+route.get('/refresh-token', async ctx => {
+
+    try {
+
+        const gen = new TokenGenerator(privateKey, publicKey, params);
+
+        let data = ctx.request.body;
+
+        let accessToken = gen.refresh(data, paramsAcessToken);
+        let refreshToken = gen.refresh(accessToken, paramsRefreshToken);
+
+        ctx.response.body = {
+            'accessToken': accessToken,
+            'refreshToken': refreshToken,
+        };
+
+    } catch (e) {
+
+        console.log(e);
         ctx.response.status = 500;
 
     }
@@ -40,5 +76,6 @@ route.get('/authorization-token', async ctx => {
 let apiRoute = Router({ prefix: '/api/v1' });
 apiRoute.extend(route);
 
+app.use(route.middleware());
 app.use(apiRoute.middleware());
 app.listen(config.port);
