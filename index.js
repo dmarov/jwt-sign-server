@@ -5,6 +5,7 @@
 const config = require('./lib/Config');
 const Koa = require('koa');
 const jsonBody = require('koa-json-body');
+const bodyParser = require('koa-bodyparser');
 const Router = require('koa-better-router');
 const fs = require('fs');
 const path = require('path');
@@ -21,7 +22,8 @@ const params = { algorithm: 'RS512' };
 const paramsAcessToken = { expiresIn: config.accessTokenExpiresIn };
 const paramsRefreshToken = { expiresIn: config.refreshTokenExpiresIn };
 
-app.use(jsonBody({fallback: true}));
+// app.use(jsonBody({fallback: true}));
+app.use(bodyParser());
 
 route.get('/access-token', async ctx => {
 
@@ -29,11 +31,12 @@ route.get('/access-token', async ctx => {
 
         const gen = new TokenGenerator(privateKey, publicKey, params);
 
-        let data = ctx.request.body;
+        let payload = ctx.request.body;
 
-        let accessToken = gen.sign(data, paramsAcessToken);
+        let accessToken = gen.sign(payload, paramsAcessToken);
         let refreshToken = gen.refresh(accessToken, paramsRefreshToken);
 
+        ctx.set("Content-Type", "application/json");
         ctx.response.body = {
             'accessToken': accessToken,
             'refreshToken': refreshToken,
@@ -54,11 +57,12 @@ route.get('/refresh-token', async ctx => {
 
         const gen = new TokenGenerator(privateKey, publicKey, params);
 
-        let data = ctx.request.body;
+        let oldRefreshToken = ctx.request.body['refreshToken'];
 
-        let accessToken = gen.refresh(data, paramsAcessToken);
+        let accessToken = gen.refresh(oldRefreshToken, paramsAcessToken);
         let refreshToken = gen.refresh(accessToken, paramsRefreshToken);
 
+        ctx.set("Content-Type", "application/json");
         ctx.response.body = {
             'accessToken': accessToken,
             'refreshToken': refreshToken,
