@@ -4,7 +4,6 @@
 
 const config = require('./lib/Config');
 const Koa = require('koa');
-const jsonBody = require('koa-json-body');
 const bodyParser = require('koa-bodyparser');
 const Router = require('koa-better-router');
 const fs = require('fs');
@@ -22,7 +21,6 @@ const params = { algorithm: 'RS512' };
 const paramsAcessToken = { expiresIn: config.accessTokenExpiresIn };
 const paramsRefreshToken = { expiresIn: config.refreshTokenExpiresIn };
 
-// app.use(jsonBody({fallback: true}));
 app.use(bodyParser());
 
 route.get('/access-token', async ctx => {
