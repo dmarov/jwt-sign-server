@@ -1,5 +1,5 @@
 {
-  "name": "auth-server",
+  "name": "jwt-sign-server",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/jail-maker/auth-server.git",

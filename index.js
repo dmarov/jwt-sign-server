@@ -35,6 +35,7 @@ route.get('/access-token', async ctx => {
         let refreshToken = gen.refresh(accessToken, paramsRefreshToken);
 
         ctx.set("Content-Type", "application/json");
+
         ctx.response.body = {
             'accessToken': accessToken,
             'refreshToken': refreshToken,
