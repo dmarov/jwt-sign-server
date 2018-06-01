@@ -2,7 +2,7 @@
 
 'use strict';
 
-const config = require('./lib/Config');
+const args = require('./lib/args');
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const Router = require('koa-better-router');
@@ -14,12 +14,12 @@ const TokenGenerator = require('./lib/token-generator');
 let app = new Koa();
 let route = Router().loadMethods();
 
-let privateKey = fs.readFileSync(path.resolve(config.privateKeyPath));
-let publicKey = fs.readFileSync(path.resolve(config.publicKeyPath));
+let privateKey = fs.readFileSync(path.resolve(args.privateKey));
+let publicKey = fs.readFileSync(path.resolve(args.publicKey));
 
 const params = { algorithm: 'RS512' };
-const paramsAcessToken = { expiresIn: config.accessTokenExpiresIn };
-const paramsRefreshToken = { expiresIn: config.refreshTokenExpiresIn };
+const paramsAcessToken = { expiresIn: args.accessLimit };
+const paramsRefreshToken = { expiresIn: args.refreshLimit };
 
 app.use(bodyParser());
 
@@ -81,4 +81,4 @@ apiRoute.extend(route);
 
 app.use(route.middleware());
 app.use(apiRoute.middleware());
-app.listen(config.port);
+app.listen(args.port, args.host);
