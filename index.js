@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const TokenGenerator = require('./lib/token-generator');
+const http = require('http');
 
 let app = new Koa();
 let route = Router().loadMethods();
@@ -18,8 +19,8 @@ let privateKey = fs.readFileSync(path.resolve(args.privateKey));
 let publicKey = fs.readFileSync(path.resolve(args.publicKey));
 
 const params = { algorithm: 'RS512' };
-const paramsAcessToken = { expiresIn: args.accessLimit };
-const paramsRefreshToken = { expiresIn: args.refreshLimit };
+const paramsAcessToken = { expiresIn: args.accessTtl };
+const paramsRefreshToken = { expiresIn: args.refreshTtl };
 
 app.use(bodyParser());
 
@@ -81,4 +82,6 @@ apiRoute.extend(route);
 
 app.use(route.middleware());
 app.use(apiRoute.middleware());
-app.listen(args.port, args.host);
+// app.listen(args.port, args.host);
+let server = http.createServer(app.callback());
+server.listen(args.port, args.host)
