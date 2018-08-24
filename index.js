@@ -29,7 +29,7 @@ route.get('/', async ctx => {
     try {
 
         ctx.set("Content-Type", "text/html");
-        let docPath = path.resolve(__dirname, 'doc/openapi.html');
+        let docPath = path.resolve(__dirname, 'doc/api/v1/openapi.html');
         ctx.response.body = fs.createReadStream(docPath);
 
     } catch (e) {
@@ -68,7 +68,35 @@ route.get('/access-token', async ctx => {
 
 });
 
-route.get('/token-refresher', async ctx => {
+route.get('/generator', async ctx => {
+
+    try {
+
+        const gen = new TokenGenerator(privateKey, publicKey, params);
+
+        let payload = ctx.request.body;
+
+        let accessToken = gen.sign(payload, paramsAcessToken);
+        let refreshToken = gen.refresh(accessToken, paramsRefreshToken);
+
+        ctx.set("Content-Type", "application/json");
+
+        ctx.response.body = {
+            'accessToken': accessToken,
+            'refreshToken': refreshToken,
+        };
+
+    } catch (e) {
+
+        console.log(e);
+        ctx.response.status = 500;
+        ctx.response.body = e.message;
+
+    }
+
+});
+
+route.get('/refresher', async ctx => {
 
     try {
 
@@ -87,37 +115,62 @@ route.get('/token-refresher', async ctx => {
 
     } catch (e) {
 
-        if (e.name === 'JsonWebTokenError')  {
+        if (e.name === 'TokenExpiredError') {
             ctx.response.status = 400;
-            ctx.response.body = e.message;
+        } else if (e.name === 'JsonWebTokenError' && e.message === 'invalid signature')  {
+            ctx.response.status = 400;
         } else {
             console.log(e);
             ctx.response.status = 500;
         }
 
+        ctx.response.body = e.message;
+
     }
 
 });
 
-route.get('/token-verifier', async ctx => {
+route.get('/decoder', async ctx => {
+
+    let token = ctx.request.body['token'];
 
     try {
 
-        let token = ctx.request.body['token'];
+        let payload = jwt.verify(token, publicKey);
 
-        try {
-            jwt.verify(token, publicKey);
-            ctx.set("Content-Type", "application/json");
-            ctx.response.body = true;
-        } catch (e) {
-            ctx.set("Content-Type", "application/json");
-            ctx.response.body = false;
-        }
+        delete payload.iat;
+        delete payload.exp;
+        delete payload.nbf;
+        delete payload.jti;
+
+        ctx.set("Content-Type", "application/json");
+        ctx.response.body = {
+            "expired": false,
+            "content": payload,
+        };
 
     } catch (e) {
 
-        console.log(e);
-        ctx.response.status = 500;
+        if (e.name === 'TokenExpiredError') {
+
+            let payload = jwt.decode(token, publicKey);
+
+            delete payload.iat;
+            delete payload.exp;
+            delete payload.nbf;
+            delete payload.jti;
+
+            ctx.response.body = {
+                "expired": true,
+                "content": payload,
+            };
+
+        } else if (e.name === 'JsonWebTokenError' && e.message === 'invalid signature') {
+            ctx.response.status = 400;
+            ctx.response.body = e.message;
+        } else {
+            ctx.response.body = false;
+        }
 
     }
 

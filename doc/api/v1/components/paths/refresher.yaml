@@ -18,3 +18,10 @@ get:
         application/json:
           schema:
             $ref: '../schemas/tokens.yaml'
+    '400':
+      description: invalid JWT specified
+      content:
+        application/json:
+          schema:
+            type: string
+          example: invalid signature

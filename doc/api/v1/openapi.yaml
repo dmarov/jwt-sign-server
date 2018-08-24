@@ -18,9 +18,9 @@ servers:
         default: v1
 
 paths:
-  /access-token:
-    $ref: 'components/paths/access-token.yaml'
-  /token-refresher:
-    $ref: 'components/paths/token-refresher.yaml'
-  /token-verifier:
-    $ref: 'components/paths/token-verifier.yaml'
+  /generator:
+    $ref: 'components/paths/generator.yaml'
+  /refresher:
+    $ref: 'components/paths/refresher.yaml'
+  /verifier:
+    $ref: 'components/paths/verifier.yaml'
