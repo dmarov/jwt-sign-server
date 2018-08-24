@@ -41,33 +41,6 @@ route.get('/', async ctx => {
 
 });
 
-route.get('/access-token', async ctx => {
-
-    try {
-
-        const gen = new TokenGenerator(privateKey, publicKey, params);
-
-        let payload = ctx.request.body;
-
-        let accessToken = gen.sign(payload, paramsAcessToken);
-        let refreshToken = gen.refresh(accessToken, paramsRefreshToken);
-
-        ctx.set("Content-Type", "application/json");
-
-        ctx.response.body = {
-            'accessToken': accessToken,
-            'refreshToken': refreshToken,
-        };
-
-    } catch (e) {
-
-        console.log(e);
-        ctx.response.status = 500;
-
-    }
-
-});
-
 route.get('/generator', async ctx => {
 
     try {
