@@ -111,38 +111,20 @@ route.get('/decoder', async ctx => {
 
         let payload = jwt.verify(token, publicKey);
 
-        delete payload.iat;
-        delete payload.exp;
-        delete payload.nbf;
-        delete payload.jti;
-
         ctx.set("Content-Type", "application/json");
-        ctx.response.body = {
-            "valid": true,
-            "content": payload,
-        };
+        ctx.response.body = payload;
 
     } catch (e) {
 
         if (e.name === 'TokenExpiredError') {
-
-            let payload = jwt.decode(token, publicKey);
-
-            delete payload.iat;
-            delete payload.exp;
-            delete payload.nbf;
-            delete payload.jti;
-
-            ctx.response.body = {
-                "valid": false,
-                "content": payload,
-            };
-
+            ctx.response.status = 400;
+            ctx.response.body = e.message;
         } else if (e.name === 'JsonWebTokenError' && e.message === 'invalid signature') {
             ctx.response.status = 400;
             ctx.response.body = e.message;
         } else {
-            ctx.response.body = false;
+            console.log(e);
+            ctx.response.status = 500;
         }
 
     }

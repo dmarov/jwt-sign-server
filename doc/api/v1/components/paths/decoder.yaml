@@ -18,22 +18,18 @@ get:
         application/json:
           schema:
             type: object
-            properties:
-              valid:
-                type: boolean
-                example: true
-              payload:
-                type: object
-                example:
-                  user:
-                    Ivan
-                  permission:
-                    - read
-                    - write
+            example:
+              user:
+                Ivan
+              permission:
+                - read
+                - write
+              iat: 1535116666
+              exp: 1535116786
     '400':
-      description: invalid JWT specified
+      description: invalid JWT specified or JWT expired
       content:
         application/json:
           schema:
             type: string
-          example: invalid signature
+          example: jwt expired
