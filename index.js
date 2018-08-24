@@ -145,7 +145,7 @@ route.get('/decoder', async ctx => {
 
         ctx.set("Content-Type", "application/json");
         ctx.response.body = {
-            "expired": false,
+            "valid": true,
             "content": payload,
         };
 
@@ -161,7 +161,7 @@ route.get('/decoder', async ctx => {
             delete payload.jti;
 
             ctx.response.body = {
-                "expired": true,
+                "valid": false,
                 "content": payload,
             };
 

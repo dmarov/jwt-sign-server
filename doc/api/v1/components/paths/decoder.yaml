@@ -17,8 +17,19 @@ get:
       content:
         application/json:
           schema:
-            type: boolean
-            example: true
+            type: object
+            properties:
+              valid:
+                type: boolean
+                example: true
+              payload:
+                type: object
+                example:
+                  user:
+                    Ivan
+                  permission:
+                    - read
+                    - write
     '400':
       description: invalid JWT specified
       content:

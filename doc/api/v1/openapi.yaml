@@ -22,5 +22,5 @@ paths:
     $ref: 'components/paths/generator.yaml'
   /refresher:
     $ref: 'components/paths/refresher.yaml'
-  /verifier:
-    $ref: 'components/paths/verifier.yaml'
+  /decoder:
+    $ref: 'components/paths/decoder.yaml'
