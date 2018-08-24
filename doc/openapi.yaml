@@ -8,6 +8,8 @@ info:
   version: 1.0.0
 
 servers:
+  - url: http://jwt-sign-server.websm.io
+    description: production server
   - url: http://jwt-sign-server.websm.io/api/{version}
     description: production server
     variables:
@@ -20,5 +22,5 @@ paths:
     $ref: 'components/paths/access-token.yaml'
   /token-refresher:
     $ref: 'components/paths/token-refresher.yaml'
-  # /token-verifier:
-  #   $ref: 'components/paths/token-verifier.yaml'
+  /token-verifier:
+    $ref: 'components/paths/token-verifier.yaml'

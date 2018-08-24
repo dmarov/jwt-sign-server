@@ -87,8 +87,13 @@ route.get('/token-refresher', async ctx => {
 
     } catch (e) {
 
-        console.log(e);
-        ctx.response.status = 500;
+        if (e.name === 'JsonWebTokenError')  {
+            ctx.response.status = 400;
+            ctx.response.body = e.message;
+        } else {
+            console.log(e);
+            ctx.response.status = 500;
+        }
 
     }
 
@@ -98,19 +103,16 @@ route.get('/token-verifier', async ctx => {
 
     try {
 
-        // const gen = new TokenGenerator(privateKey, publicKey, params);
+        let token = ctx.request.body['token'];
 
-        // let oldRefreshToken = ctx.request.body['refreshToken'];
-
-        // let accessToken = gen.refresh(oldRefreshToken, paramsAcessToken);
-        // let refreshToken = gen.refresh(accessToken, paramsRefreshToken);
-
-        ctx.set("Content-Type", "application/json");
-        // ctx.response.body = {
-        //     'accessToken': accessToken,
-        //     'refreshToken': refreshToken,
-        // };
-        ctx.response.body = true;
+        try {
+            jwt.verify(token, publicKey);
+            ctx.set("Content-Type", "application/json");
+            ctx.response.body = true;
+        } catch (e) {
+            ctx.set("Content-Type", "application/json");
+            ctx.response.body = false;
+        }
 
     } catch (e) {
 

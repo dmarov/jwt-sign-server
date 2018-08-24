@@ -18,5 +18,3 @@ get:
         application/json:
           schema:
             $ref: '../schemas/tokens.yaml'
-    '500':
-      description: internal server error
