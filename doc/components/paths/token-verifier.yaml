@@ -1,0 +1,57 @@
+get:
+  security:
+    - jwtAuth: []
+  summary: get list of quizzes
+  parameters:
+    - name: offset
+      in: query
+      schema:
+        type: integer
+      description: first quiz number
+    - name: limit
+      in: query
+      schema:
+        type: integer
+      description: limit quizzes number
+  responses:
+    '200':
+      description: list of quizzes
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/quiz.yaml#/PaginatedQuizzes'
+    '401':
+      $ref: '../responses/not-authorized.yaml'
+    '403':
+      $ref: '../responses/forbidden.yaml'
+  tags:
+    - quizzes
+
+post:
+  security:
+    - jwtAuth: []
+  summary: create quiz
+  requestBody:
+    description: provides quiz title using json format
+    content:
+      application/json:
+        schema:
+          properties:
+            title:
+              type: string
+        example:
+          title: New Exiting Quiz
+    required: true
+  responses:
+    '201':
+      description: quiz created
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/quiz.yaml#/Quiz'
+    '401':
+      $ref: '../responses/not-authorized.yaml'
+    '403':
+      $ref: '../responses/forbidden.yaml'
+  tags:
+    - quizzes

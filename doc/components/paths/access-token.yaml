@@ -1,0 +1,23 @@
+get:
+  summary: get access and refresh tokens
+  requestBody:
+    description: whatever you need to sign
+    content:
+      application/json:
+        schema:
+          type: object
+          additionalProperties: true
+        example:
+          user: Bob
+          permissions:
+            access: yes
+            modify: no
+  responses:
+    '200':
+      description: access and refresh tokens
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/tokens.yaml'
+    '500':
+      description: internal server error

@@ -1,0 +1,24 @@
+openapi: "3.0.1"
+info:
+  title: JSON Web Token API
+  description: Generates access and refresh JWT
+  contact:
+    name: API Support
+    email: dmitrym.dev@websm.io
+  version: 1.0.0
+
+servers:
+  - url: http://jwt-sign-server.websm.io/api/{version}
+    description: production server
+    variables:
+      version:
+        description: api version
+        default: v1
+
+paths:
+  /access-token:
+    $ref: 'components/paths/access-token.yaml'
+  /token-refresher:
+    $ref: 'components/paths/token-refresher.yaml'
+  # /token-verifier:
+  #   $ref: 'components/paths/token-verifier.yaml'

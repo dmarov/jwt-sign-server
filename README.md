@@ -1,6 +1,6 @@
-# auth-server
+# jwt-sign-server
 
-enables to accuire token for jwt authorization
+enables to accuire and verify token for jwt authorization
 
 ## requirements:
 

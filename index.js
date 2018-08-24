@@ -24,6 +24,23 @@ const paramsRefreshToken = { expiresIn: args.refreshTtl };
 
 app.use(bodyParser());
 
+route.get('/', async ctx => {
+
+    try {
+
+        ctx.set("Content-Type", "text/html");
+        let docPath = path.resolve(__dirname, 'doc/openapi.html');
+        ctx.response.body = fs.createReadStream(docPath);
+
+    } catch (e) {
+
+        console.log(e);
+        ctx.response.status = 500;
+
+    }
+
+});
+
 route.get('/access-token', async ctx => {
 
     try {
@@ -51,7 +68,7 @@ route.get('/access-token', async ctx => {
 
 });
 
-route.get('/refresh-token', async ctx => {
+route.get('/token-refresher', async ctx => {
 
     try {
 
@@ -77,11 +94,37 @@ route.get('/refresh-token', async ctx => {
 
 });
 
+route.get('/token-verifier', async ctx => {
+
+    try {
+
+        // const gen = new TokenGenerator(privateKey, publicKey, params);
+
+        // let oldRefreshToken = ctx.request.body['refreshToken'];
+
+        // let accessToken = gen.refresh(oldRefreshToken, paramsAcessToken);
+        // let refreshToken = gen.refresh(accessToken, paramsRefreshToken);
+
+        ctx.set("Content-Type", "application/json");
+        // ctx.response.body = {
+        //     'accessToken': accessToken,
+        //     'refreshToken': refreshToken,
+        // };
+        ctx.response.body = true;
+
+    } catch (e) {
+
+        console.log(e);
+        ctx.response.status = 500;
+
+    }
+
+});
+
 let apiRoute = Router({ prefix: '/api/v1' });
 apiRoute.extend(route);
 
 app.use(route.middleware());
 app.use(apiRoute.middleware());
-// app.listen(args.port, args.host);
 let server = http.createServer(app.callback());
 server.listen(args.port, args.host)

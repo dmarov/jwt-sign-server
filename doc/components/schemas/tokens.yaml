@@ -1,0 +1,11 @@
+type: object
+properties:
+  accessToken:
+    type: string
+  refreshToken:
+    type: string
+description: access and refresh tokens
+example:
+  accessToken: header.payload.signature
+  refreshToken: header.payload.signature
+

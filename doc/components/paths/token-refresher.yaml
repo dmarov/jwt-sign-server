@@ -1,0 +1,22 @@
+get:
+  summary: get renewed access and refresh tokens
+  requestBody:
+    description: old refresh token
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            refreshToken:
+              type: string
+        example:
+          refreshToken: header.payload.signature
+  responses:
+    '200':
+      description: new access and refresh tokens
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/tokens.yaml'
+    '500':
+      description: internal server error
