@@ -1,5 +1,5 @@
 get:
-  summary: get token validity verification result
+  summary: get validated token payload
   requestBody:
     description: old refresh token
     content:
@@ -13,7 +13,7 @@ get:
           token: header.payload.signature
   responses:
     '200':
-      description: token verification result
+      description: token payload
       content:
         application/json:
           schema:
