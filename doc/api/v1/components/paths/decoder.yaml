@@ -19,11 +19,10 @@ get:
           schema:
             type: object
             example:
-              user:
-                Ivan
-              permission:
-                - read
-                - write
+              user: Bob
+              permissions:
+                access: yes
+                modify: no
               iat: 1535116666
               exp: 1535116786
     '400':
