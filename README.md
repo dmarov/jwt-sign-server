@@ -7,6 +7,7 @@ enables to accuire and verify token for jwt authorization
 - FreeBSD >= 11.1
 - node >= 9.1
 - `npm` or `yarn`
+- openssl
 
 ## easiest way to generate keys:
 ```
