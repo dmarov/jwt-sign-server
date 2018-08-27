@@ -5,12 +5,7 @@ get:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            token:
-              type: string
-        example:
-          token: header.payload.signature
+            $ref: '../schemas/token.yaml'
   responses:
     '200':
       description: token payload

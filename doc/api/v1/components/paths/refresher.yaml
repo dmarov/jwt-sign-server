@@ -5,12 +5,7 @@ get:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            refreshToken:
-              type: string
-        example:
-          refreshToken: header.payload.signature
+            $ref: '../schemas/refresh-token.yaml'
   responses:
     '200':
       description: new access and refresh tokens

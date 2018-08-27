@@ -1,0 +1,8 @@
+type: object
+properties:
+  token:
+    type: string
+description: any tokens
+example:
+  token: eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MzUzNTQwMTUsImV4cCI6MTUzNTM1NDEzNX0.XA4HuA-xWMkcUWLjP1oSu5rUbc4DhTni4zC9M00u4UvlYdWx3mylsPbvxrGW4w6MqeNCRtFqpV_7iU8FLXGfHMty2TBjNIkg8WvfuMbcB5ZwGNo3XtTU3YWtQ3Dc3R0br_wZd9UP3UmSMC6UsX8_9U-MkaNFp8601NXQYtagXTJ2-1aNph8WaQNYSVJsqfOhgFbktcXqXe_mnUXjyYbvjiyPDe-bv0ON7LVehZccFjQNvHc_oU4L6fhQfxHIvGS8KkYFQSBwC2YmjlSvmOEt40viGb6P6gOnlXPBF1By_Qu__WelZMDGi5N-OSMqG4jqp9WeH_mdysFsY0sD43OO2w
+
