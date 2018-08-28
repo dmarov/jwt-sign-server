@@ -114,7 +114,7 @@ route.get('/decoder', async ctx => {
             ctx.response.status = 400;
             ctx.response.body = e.message;
         } else if (e.name === 'JsonWebTokenError' && e.message === 'invalid signature') {
-            ctx.response.status = 400;
+            ctx.response.status = 422;
             ctx.response.body = e.message;
         } else if (e.name === 'JsonWebTokenError' && e.message === 'jwt must be provided') {
             ctx.response.status = 400;

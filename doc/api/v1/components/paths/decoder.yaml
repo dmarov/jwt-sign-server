@@ -21,9 +21,17 @@ get:
               iat: 1535116666
               exp: 1535116786
     '400':
-      description: invalid JWT specified or JWT expired
+      description: JWT expired
       content:
         application/json:
           schema:
             type: string
           example: jwt expired
+    '422':
+      description: invalid signature
+      content:
+        application/json:
+          schema:
+            type: string
+          example: invalid signature
+ 
